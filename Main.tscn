@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctdxxpm6x2uib"]
+
+[ext_resource type="Script" path="res://res/Scripts/Main.gd" id="1_8vi0x"]
+[ext_resource type="Texture2D" uid="uid://bo5e5gvn1osqx" path="res://res/Images/Background.jpg" id="2_b5wm4"]
+
+[node name="LiveChat" type="Node"]
+script = ExtResource("1_8vi0x")
+ChatUrl = "https://www.youtube.com/live_chat?is_popout=1&v=S-J6HCwl14o"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+use_threads = true
+timeout = 3.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b5wm4")
+expand_mode = 1
+
+[node name="CodeEdit" type="CodeEdit" parent="Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -101.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="LiveChats" type="VBoxContainer" parent="Control"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+alignment = 2
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

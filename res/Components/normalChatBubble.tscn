@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://dytubsiuwgmpu"]
+
+[ext_resource type="Texture2D" uid="uid://7racecvedgys" path="res://res/Images/ChatWindow.png" id="1_yn7s2"]
+[ext_resource type="Script" path="res://res/Scripts/chat_bubble.gd" id="2_sfdtv"]
+[ext_resource type="FontFile" uid="uid://y21uvqtadi04" path="res://res/Fonts/LanaPixel/LanaPixel.ttf" id="3_sa8a7"]
+
+[node name="ChatBubble" type="NinePatchRect"]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 48)
+offset_right = 256.0
+offset_bottom = 44.0
+texture = ExtResource("1_yn7s2")
+patch_margin_left = 1
+patch_margin_top = 18
+patch_margin_right = 16
+patch_margin_bottom = 2
+script = ExtResource("2_sfdtv")
+
+[node name="Name" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -20.0
+offset_bottom = 17.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("3_sa8a7")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "Jenenge"
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Chat" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 19.0
+offset_right = -6.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("3_sa8a7")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "Mangat mashe!! :aaa: 
+asda [img=8]res://icon.svg[/img] [color=red]adasd[/color] hahahahahahahahahahah"
+scroll_active = false
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
