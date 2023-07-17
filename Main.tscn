@@ -5,7 +5,7 @@
 
 [node name="LiveChat" type="Node"]
 script = ExtResource("1_8vi0x")
-ChatUrl = "https://www.youtube.com/live_chat?is_popout=1&v=S-J6HCwl14o"
+ChatUrl = "https://www.youtube.com/live_chat?is_popout=1&v=C7UHV_PItB0"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 use_threads = true
@@ -31,6 +31,7 @@ texture = ExtResource("2_b5wm4")
 expand_mode = 1
 
 [node name="CodeEdit" type="CodeEdit" parent="Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -48,5 +49,57 @@ anchor_bottom = 1.0
 offset_right = 320.0
 grow_vertical = 2
 alignment = 2
+
+[node name="Metadata" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -288.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="viewCount" type="Label" parent="Control/Metadata"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_right = 66.0
+offset_bottom = -22.0
+grow_vertical = 0
+text = "People"
+
+[node name="likeCount" type="Label" parent="Control/Metadata"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -48.0
+offset_right = -14.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Like"
+
+[node name="videoStart" type="Label" parent="Control/Metadata"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -26.0
+offset_right = 66.0
+grow_vertical = 0
+text = "Stream Start"
+
+[node name="videoTitle" type="Label" parent="Control/Metadata"]
+layout_mode = 1
+offset_right = 82.0
+offset_bottom = 26.0
+text = "Video Title"
 
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

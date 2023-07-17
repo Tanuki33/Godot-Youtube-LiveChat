@@ -33,15 +33,14 @@ func renderChat(liveData):
 			if chatData.has("removeChatItemAction"):
 				print("delete chat")
 				getChat(continuation)
-				return
 			if chatData.has("addLiveChatTickerItemAction"):
 				itemData = chatData.addLiveChatTickerItemAction.item.liveChatTickerPaidMessageItemRenderer
 				superChat(itemData, continuation)
-				return
 			if chatData.has("addChatItemAction"):
 				itemData = chatData.addChatItemAction.item
 				normalChat(itemData, continuation)
-				return
+			if chatData.has("updateLiveChatPollAction"):
+				chatPoll(itemData, continuation)
 	else:
 		getChat(continuation)
 
@@ -132,8 +131,38 @@ func getChat(continuation):
 		}
 	$HTTPRequest.request("https://www.youtube.com/youtubei/v1/live_chat/get_live_chat?key="+ INNERTUBE_API_KEY , HeaderPost, HTTPClient.METHOD_POST, JSON.stringify(Query))
 
+func getMetadata(continuation):
+	var Query = {
+		  "context": {
+			"client": {
+			  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36,gzip(gfe)",
+			  "clientName": "WEB",
+			  "clientVersion": "2.20230714.00.00",
+			  "osName": "Windows",
+			  "osVersion": "10.0",
+			  "originalUrl": ChatUrl,
+			  "platform": "DESKTOP",
+			  "clientFormFactor": "UNKNOWN_FORM_FACTOR",
+			  "mainAppWebInfo": {
+				"graftUrl": ChatUrl,
+				"webDisplayMode": "WEB_DISPLAY_MODE_BROWSER",
+				"isWebNativeShareAvailable": true
+			  },
+			  "timeZone": "Asia/Jakarta"
+			}
+		  },
+		  "continuation": continuation,
+		  "webClientInfo": {
+			"isDocumentHidden": true
+		  }
+		}
+	$HTTPRequest.request("https://www.youtube.com/youtubei/v1/updated_metadata?key="+ INNERTUBE_API_KEY , HeaderPost, HTTPClient.METHOD_POST, JSON.stringify(Query))
+
 func customEmojiHandler(url, emojiShortcut):
 	pass
+
+func chatPoll(itemData, continuation):
+	getChat(continuation)
 
 func _on_http_request_request_completed(result, response_code, headers, body):
 	body = await body.get_string_from_utf8()
@@ -143,11 +172,15 @@ func _on_http_request_request_completed(result, response_code, headers, body):
 		INNERTUBE_API_KEY = RegEx_Innertube.search(body).get_string(1)
 		var RegEx_Continuation = RegEx.new()
 		RegEx_Continuation.compile("continuation..\"(.*?)\"")
-		var continuation = RegEx_Continuation.search(body).get_string(1)
+		var continuation = RegEx_Continuation.search(body)
+		if continuation == null:
+			$Control/Metadata/viewCount.text = "Stream Ended."
+			return
 		if INNERTUBE_API_KEY:
 			HaveKey = true
+			lastContinuation = continuation
 			DisplayServer.window_set_title("Tan - Youtube Live Chat")
-			await getChat(continuation)
+			await getChat(continuation.get_string(1))
 	elif INNERTUBE_API_KEY and HaveKey:
 		await renderChat(str(JSON.parse_string(body)))
 
